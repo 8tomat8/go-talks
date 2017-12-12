@@ -58,15 +58,15 @@ Email: 8tomat8@gmail.com
 
 Simple types
 
-	uint (uint8, uint16, uint32, uint64) - unsigned ingegers
-	int (int8, int16, int32, int64) - signed ingegers
-	float32, float64 - floating-point numbers
-	complex64, complex128 - complex numbers with float32 real and imaginary parts
-	bool - true and false
+	uint (uint8, uint16, uint32, uint64) - unsigned ingegers. Zero value - 0
+	int (int8, int16, int32, int64) - signed ingegers. Zero value - 0
+	float32, float64 - floating-point numbers. Zero value - 0.0
+	complex64, complex128 - complex numbers with float32 real and imaginary parts. Zero value - (0+0i)
+	bool - true and false. Zero value - false
 
-	byte - alias for uint8
-	string - represents the set of string values (immutable)
-	rune - alias for uint32
+	byte - alias for uint8. Zero value - 0
+	string - represents the set of string values (immutable). Zero value - ""
+	rune - alias for uint32. Zero value - 0
 	array - sequence of elements of a single type
 
 Complex types
@@ -77,6 +77,8 @@ Complex types
 	struct - a sequence of named elements, called fields, each of which has a name and a type
 	interface - specifies a method set
 	func - specifies a function sign
+
+Zero values for slice, map, chan, interface, pointer is nil
 
 * String and Rune
 
@@ -153,6 +155,7 @@ We are quite limited with structs because of type system
 .link https://blog.golang.org/go-slices-usage-and-internals Go Slices: usage and internals
 
 Will be helpfull on HA
+.link https://go-traps.appspot.com/ Go Traps
 .link https://golang.org/pkg/fmt/ fmt 
 .link https://golang.org/pkg/flag/ flag
 .link https://golang.org/pkg/os/ os
