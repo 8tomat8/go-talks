@@ -1,0 +1,47 @@
+Development task: Library 
+Database: Not required. Any local storage could be used. The library has to be persistent.
+
+-----
+
+Create an application with simple REST API using HTTP protocol. All data must be transferred in JSON format only
+It should have several endpoints with different content
+- GET http://localhost:8081/books - should return list of all available books (HTTP statuses. On Success: 200;)
+- POST http://localhost:8081/books - should accept object with new book and check if all fields are populated and save in library. ID should be generated on server (HTTP statuses. On Success: 201; On Fail: 400;)
+- GET http://localhost:8081/books/[id] - should return book by id (HTTP statuses. On Success: 200; On Fail: 404;)
+- DELETE http://localhost:8081/books/[id] - should delete book from library by id (HTTP statuses. On Success: 204; On Fail: 404;)
+- PUT http://localhost:8081/books/[id] - should accept an object with changed fields only and update it inside library by id. Final state of book should be returned on every call (HTTP statuses. On Success: 200; On Fail (extra fields or not valid data type): 400; On Fail (book does not exist): 404;)
+- POST http://localhost:8081/books/[id] - should accept an object with filter and return list of books that fit filters. For ex. {"price":">13.00"} should return all books where price more then 13.00 (HTTP statuses. On Success: 200; On Fail: 400;)
+
+-----
+
+We have a library with 3 default books:
+[
+	{
+		"id": "1349A807-87CA-446C-9740-480238489517",
+		"title": "Book title1",
+		"ganres": ["detective", "comedy"],
+		"pages": 321,
+		"price": 12.43
+	},
+	{
+		"id": "C97376B9-6C2E-41E5-9DBE-2E82C0EF114B",
+		"title": "Book title2",
+		"ganres": ["adventure"],
+		"pages": 234,
+		"price": 25.43
+	},
+	{
+		"id": "FFAD23EB-8FF4-4E09-82D2-AA33EBE3997F",
+		"title": "Book title3",
+		"ganres": ["historical"],
+		"pages": 321,
+		"price": 999.00
+	},
+]
+
+-----
+
+Application should have packages:
+	main - application starter
+	storage - implements storage and interface to work with it
+	api/web - implements all handlers, server and routsÍ
