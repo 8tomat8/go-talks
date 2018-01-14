@@ -2,81 +2,67 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"net"
 	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 var counter int64
 
-func handler(c net.Conn) {
-	counter = atomic.AddInt64(&counter, 1)
-	c.Write([]byte("ok" + strconv.Itoa(int(counter)) + "\n"))
-	c.Close()
-}
-
 func main() {
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+		ForceColors:   true,
+	})
+
 	l, err := net.Listen("tcp", ":5000")
 	if err != nil {
 		panic(err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*2)
 
 	stopChan := make(chan struct{})
 	go server(ctx, stopChan, l)
 
-	wg := &sync.WaitGroup{}
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func() {
-			client()
-			wg.Done()
-		}()
-	}
-
-	wg.Wait()
+	logrus.Info("Server started")
+	<-ctx.Done()
+	logrus.Info("Timeout")
 	l.Close()
-	cancel()
+	logrus.Info("Listener closed")
 	<-stopChan
-}
-
-func client() {
-	conn, err := net.Dial("tcp", "127.0.0.1:5000")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	data := make([]byte, 2<<10)
-	for {
-		n, err := conn.Read(data)
-		if err != nil {
-			fmt.Println("Cli error:", err)
-			break
-		}
-		fmt.Println(string(data[:n]))
-	}
+	logrus.Info("Server stoped")
 }
 
 func server(ctx context.Context, stopChan chan struct{}, l net.Listener) {
-	defer func() { close(stopChan) }()
+	defer close(stopChan)
+	handlerWG := &sync.WaitGroup{}
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("Server stop")
+			logrus.Info("Server stop, waiting for handlers")
+			handlerWG.Wait()
 			return
 		default:
 			c, err := l.Accept()
 			if err != nil {
 				continue
 			}
+			logrus.Info("New connect! Woohoo!")
 			// TODO: HANDLE!
-			go handler(c)
+			handlerWG.Add(1)
+			go handler(handlerWG, c)
 		}
 	}
+}
+
+func handler(handlerWG *sync.WaitGroup, c net.Conn) {
+	defer handlerWG.Done()
+	counter = atomic.AddInt64(&counter, 1)
+	c.Write([]byte("ok" + strconv.Itoa(int(counter))))
+	c.Close()
 }
