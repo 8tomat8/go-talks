@@ -1,0 +1,30 @@
+Development task: Traffic manger 
+
+-----
+
+Create an application that will consist from 3 parts
+- Traffic Circle intersection - handles cars on circle. Size 8 cars at the time
+- Input roads - generates car with specified frequency.
+- Output roads - receives cars from intersection 
+
+-----
+
+All entities (roads and intersection) must be represented as goroutines. All communication between them must be implemented using typed channels
+Each entity should have identifier and write to logs which car it generated/received/released
+
+- Input roads:
+-- First generates random number (from 0 to 5) of cars per second
+-- Second generates 1 cars each second
+-- Third generates car each two seconds
+-- Fourth generates 10 cars per second
+
+- Output roads:
+-- First receives  random number (from 0 to 5) of cars per second
+-- Second receives 1 cars each second
+-- Third receives car each hour
+-- Fourth receives 10 cars per second
+
+- Traffic Circle intersection:
+-- Can handle only 8 cars at the time
+-- Outout road should be choosen randomly
+-- Moving by circle takes 1 second for each exit

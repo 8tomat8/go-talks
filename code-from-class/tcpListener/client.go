@@ -16,7 +16,7 @@ func main() {
 	})
 
 	wg := &sync.WaitGroup{}
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 20; i++ {
 		wg.Add(1)
 		go client(wg, i)
 	}
@@ -36,6 +36,8 @@ func client(wg *sync.WaitGroup, i int) {
 		log.Fatal(err)
 		return
 	}
+
+	conn.Write([]byte{uint8(i)})
 
 	data := make([]byte, 2<<10)
 	for {
