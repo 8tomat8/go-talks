@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api;
+
+service Serv {
+    rpc GetName (Empty) returns (GetNameResponse);
+    rpc SayHello (User) returns (SayHelloResponse);
+    rpc Mul (MulRequest) returns (MulResponse);
+}
+
+message Empty {}
+
+message User {
+    string Name = 1;
+    int64 Age = 2;
+}
+
+message MulRequest {
+    int64 a = 1;
+    int64 b = 2;
+}
+
+message GetNameResponse {
+    string name = 1;
+}
+
+message SayHelloResponse {
+    string result = 1;
+}
+
+message MulResponse {
+    int64 result = 1;
+}
