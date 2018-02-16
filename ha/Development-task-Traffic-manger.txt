@@ -19,7 +19,7 @@ Each entity should have identifier and write to logs which car it generated/rece
 -- Fourth generates 10 cars per second
 
 - Output roads:
--- First receives  random number (from 0 to 5) of cars per second
+-- First receives random number (from 0 to 5) of cars per second
 -- Second receives 1 cars each second
 -- Third receives car each hour
 -- Fourth receives 10 cars per second
